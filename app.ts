@@ -13,19 +13,36 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { ErrorMiddleware } from "./middleware/error";
 
-// body parser
-app.use(express.json({ limit: "50mb" }));
+
 
 // ceate parser
 app.use(cookieParser());
 
 //cors => cross origin resource sharing
+
+// ✅ Must come before routes
+const allowedOrigins = [
+  "https://e-learning-client-theta.vercel.app",
+  "http://localhost:3000", // for local testing
+];
+
 app.use(
   cors({
-    origin: ['https://e-learning-client-theta.vercel.app'],  
-    credentials: true
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// ✅ Handle preflight requests properly
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
+// ✅ Body parser
+app.use(express.json({ limit: "50mb" }));
 
 //  api requset limit
 const limiter = rateLimit({
