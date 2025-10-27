@@ -7,53 +7,44 @@ import orderRouter from "./routes/order.route";
 import notificationRouter from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
-import {rateLimit} from "express-rate-limit"
-
+import { rateLimit } from "express-rate-limit";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { ErrorMiddleware } from "./middleware/error";
 
+// 1️⃣ Body parser
+app.use(express.json({ limit: "50mb" }));
 
-
-// ceate parser
+// 2️⃣ Cookie parser
 app.use(cookieParser());
 
-//cors => cross origin resource sharing
-
-// ✅ Must come before routes
+// 3️⃣ CORS
 const allowedOrigins = [
   "https://e-learning-client-theta.vercel.app",
-  "http://localhost:3000", // for local testing
+  "http://localhost:3000"
 ];
 
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// ✅ Handle preflight requests properly
-app.options("*", cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
+// 4️⃣ Handle OPTIONS preflight
+app.options("*", cors({ origin: allowedOrigins, credentials: true }));
 
-// ✅ Body parser
-app.use(express.json({ limit: "50mb" }));
+// 5️⃣ Rate limiter — must be before routes
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // ✅ 15 minutes
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
 
-//  api requset limit
-const limiter = rateLimit({
-  windowMs:15 * 60 * 100, // 15 mnutes
-  max:100, 
-  standardHeaders: 'draft-7',
-  legacyHeaders: false
-
-})
-
-// routes
+// 6️⃣ Routes
 app.use(
   "/api/v1",
   userRouter,
@@ -64,20 +55,17 @@ app.use(
   layoutRouter
 );
 
-// testing api
-app.get("/test", (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json({
-    success: true,
-    message: "API is working",
-  });
+// 7️⃣ Test route
+app.get("/test", (req: Request, res: Response) => {
+  res.status(200).json({ success: true, message: "API is working" });
 });
-// unknown route
-app.all(/.*/, (req: Request, res: Response, next: NextFunction) => {
-  const error = new Error(`Route ${req.originalUrl} not found`) as any;
+
+// 8️⃣ Unknown route
+app.all("*", (req: Request, res: Response, next: NextFunction) => {
+  const error: any = new Error(`Route ${req.originalUrl} not found`);
   error.statusCode = 404;
   next(error);
 });
-  // middleware calls
-app.use(limiter)
 
+// 9️⃣ Error middleware
 app.use(ErrorMiddleware);
