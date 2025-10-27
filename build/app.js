@@ -17,37 +17,39 @@ const express_rate_limit_1 = require("express-rate-limit");
 const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const error_1 = require("./middleware/error");
-// body parser
+// 1️⃣ Body parser
 exports.app.use(express_1.default.json({ limit: "50mb" }));
-// ceate parser
+// 2️⃣ Cookie parser
 exports.app.use((0, cookie_parser_1.default)());
-//cors => cross origin resource sharing
+// 3️⃣ CORS
+const allowedOrigins = [
+    "https://e-learning-client-theta.vercel.app",
+    "http://localhost:3000"
+];
 exports.app.use((0, cors_1.default)({
-    origin: ['https://e-learning-client-theta.vercel.app'],
-    credentials: true
+    origin: allowedOrigins,
+    credentials: true,
 }));
-//  api requset limit
-const limiter = (0, express_rate_limit_1.rateLimit)({
-    windowMs: 15 * 60 * 100, // 15 mnutes
+// 4️⃣ Handle OPTIONS preflight
+exports.app.options("*", (0, cors_1.default)({ origin: allowedOrigins, credentials: true }));
+// 5️⃣ Rate limiter — must be before routes
+exports.app.use((0, express_rate_limit_1.rateLimit)({
+    windowMs: 15 * 60 * 1000, // ✅ 15 minutes
     max: 100,
-    standardHeaders: 'draft-7',
-    legacyHeaders: false
-});
-// routes
+    standardHeaders: true,
+    legacyHeaders: false,
+}));
+// 6️⃣ Routes
 exports.app.use("/api/v1", user_route_1.default, course_route_1.default, order_route_1.default, notification_route_1.default, analytics_route_1.default, layout_route_1.default);
-// testing api
-exports.app.get("/test", (req, res, next) => {
-    res.status(200).json({
-        success: true,
-        message: "API is working",
-    });
+// 7️⃣ Test route
+exports.app.get("/test", (req, res) => {
+    res.status(200).json({ success: true, message: "API is working" });
 });
-// unknown route
-exports.app.all(/.*/, (req, res, next) => {
+// 8️⃣ Unknown route
+exports.app.all("*", (req, res, next) => {
     const error = new Error(`Route ${req.originalUrl} not found`);
     error.statusCode = 404;
     next(error);
 });
-// middleware calls
-exports.app.use(limiter);
+// 9️⃣ Error middleware
 exports.app.use(error_1.ErrorMiddleware);

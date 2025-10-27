@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 require('dotenv').config();
-const dbUrl = process.env.DB_URL || '';
+const dbUrl = 'mongodb+srv://qa6657467_db_user:JmM4jmnVUt8bMDEF@e-learning.faqbakn.mongodb.net/e-learning';
 const connectDB = async () => {
     try {
         await mongoose_1.default.connect(dbUrl).then((data) => {
