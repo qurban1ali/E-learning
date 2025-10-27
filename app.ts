@@ -22,11 +22,7 @@ app.use(cookieParser());
 //cors => cross origin resource sharing
 app.use(
   cors({
-<<<<<<< HEAD
-    origin: ['https://e-learning-client-theta.vercel.app'],
-=======
-    origin: ['http://localhost:3000'],
->>>>>>> 9be81cd5d37a7d64cb833791980a7d247c437183
+    origin: ['https://e-learning-client-theta.vercel.app'],  
     credentials: true
   })
 );
