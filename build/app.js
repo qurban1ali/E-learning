@@ -31,7 +31,11 @@ exports.app.use((0, cors_1.default)({
     credentials: true,
 }));
 // 4️⃣ Handle OPTIONS preflight
-exports.app.options("*", (0, cors_1.default)({ origin: allowedOrigins, credentials: true }));
+// 4️⃣ Handle OPTIONS preflight
+// app.options("*", cors({ origin: allowedOrigins, credentials: true }));
+// The above line can cause a PathError in some serverless environments (path-to-regexp parsing '*').
+// We already apply CORS globally with app.use(cors(...)), so an explicit app.options("*") is redundant
+// and may be removed to avoid the path-to-regexp error seen in Vercel logs.
 // 5️⃣ Rate limiter — must be before routes
 exports.app.use((0, express_rate_limit_1.rateLimit)({
     windowMs: 15 * 60 * 1000, // ✅ 15 minutes
