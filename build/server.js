@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = require("./app");
 const cloudinary_1 = require("cloudinary");
-const db_1 = __importDefault(require("./utils/db"));
 require("dotenv").config();
 const http_1 = __importDefault(require("http"));
 // import { initSocketServer } from "./socketServer";
@@ -17,7 +16,7 @@ cloudinary_1.v2.config({
 });
 //  initSocketServer(server)
 // create server
-server.listen(process.env.PORT, () => {
-    console.log(`Sever is connected with port ${process.env.PORT}`);
-    (0, db_1.default)();
-});
+// server.listen(process.env.PORT, () => {
+//   console.log(`Sever is connected with port ${process.env.PORT}`);
+//   connectDB();
+// });
