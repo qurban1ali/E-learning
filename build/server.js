@@ -8,7 +8,7 @@ const cloudinary_1 = require("cloudinary");
 const db_1 = __importDefault(require("./utils/db"));
 require("dotenv").config();
 const http_1 = __importDefault(require("http"));
-const socketServer_1 = require("./socketServer");
+// import { initSocketServer } from "./socketServer";
 const server = http_1.default.createServer(app_1.app);
 // cloudinary config
 cloudinary_1.v2.config({
@@ -16,7 +16,7 @@ cloudinary_1.v2.config({
     api_key: process.env.CLOUD_API_KEY,
     api_secret: process.env.CLOUD_SECRET_KEY,
 });
-(0, socketServer_1.initSocketServer)(server);
+//  initSocketServer(server)
 // create server
 server.listen(process.env.PORT, () => {
     console.log(`Sever is connected with port ${process.env.PORT}`);
