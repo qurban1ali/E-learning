@@ -57,3 +57,7 @@ exports.app.get("/test", (req, res) => {
 // });
 // 9️⃣ Error middleware
 exports.app.use(error_1.ErrorMiddleware);
+// Provide a default export for serverless platforms (Vercel expects the default
+// export to be an Express `app` or a function). Keep the named export for local
+// server startup as well.
+exports.default = exports.app;
