@@ -60,12 +60,12 @@ app.get("/test", (req: Request, res: Response) => {
   res.status(200).json({ success: true, message: "API is working" });
 });
 
-// 8️⃣ Unknown route
-app.all("*", (req: Request, res: Response, next: NextFunction) => {
-  const error: any = new Error(`Route ${req.originalUrl} not found`);
-  error.statusCode = 404;
-  next(error);
-});
+// // 8️⃣ Unknown route
+// app.all("*", (req: Request, res: Response, next: NextFunction) => {
+//   const error: any = new Error(`Route ${req.originalUrl} not found`);
+//   error.statusCode = 404;
+//   next(error);
+// });
 
 // 9️⃣ Error middleware
 app.use(ErrorMiddleware);
