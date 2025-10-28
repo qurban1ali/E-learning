@@ -10,7 +10,6 @@ require("dotenv").config();
 const http_1 = __importDefault(require("http"));
 // import { initSocketServer } from "./socketServer";
 const server = http_1.default.createServer(app_1.app);
-// cloudinary config
 cloudinary_1.v2.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_API_KEY,
