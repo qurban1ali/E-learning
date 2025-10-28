@@ -7,7 +7,6 @@ import http from "http";
 
 const server = http.createServer(app)
 
-// cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
