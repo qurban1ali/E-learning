@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "nodenext",
+    "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "rootDir": "../server",
-    "outDir": "./build"
-
-  }
+    "rootDir": "./",          // ✅ all source files in the current app folder
+    "outDir": "./build"       // ✅ compiled JS will go here
+  },
+  "include": ["**/*"]         // ✅ include all TS files
 }
