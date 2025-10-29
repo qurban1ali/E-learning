@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+require('dotenv').config()
 
 // DB_URL add
 const dbUrl = process.env.DB_URL || "";
@@ -14,7 +13,6 @@ export const connectDB = async () => {
     console.log("✅ Database connected successfully");
   } catch (error: any) {
     console.error("❌ DB connection error:", error.message);
-    setTimeout(connectDB, 5000);
   }
 };
 

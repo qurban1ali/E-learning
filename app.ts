@@ -21,6 +21,7 @@ app.use(cookieParser());
 // 3️⃣ CORS
 const allowedOrigins = [
   "https://e-learning-client-theta.vercel.app",
+  
   "http://localhost:3000"
 ];
 
