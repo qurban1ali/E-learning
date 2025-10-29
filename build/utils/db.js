@@ -3,22 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectDB = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-require('dotenv').config();
-// DB_URL add
+require("dotenv").config();
 const dbUrl = process.env.DB_URL || "";
-//Connect files
 const connectDB = async () => {
     try {
-        console.log("🟡 Connecting to MongoDB...");
-        console.log("🔗 DB_URL:", dbUrl);
-        await mongoose_1.default.connect(dbUrl);
-        console.log("✅ Database connected successfully");
+        await mongoose_1.default.connect(dbUrl).then((data) => {
+            console.log(`Database is conected with ${data.connection.host}`);
+        });
     }
     catch (error) {
-        console.error("❌ DB connection error:", error.message);
+        console.log(error.message);
+        setTimeout(connectDB, 2000);
     }
 };
-exports.connectDB = connectDB;
-exports.default = exports.connectDB;
+exports.default = connectDB;
