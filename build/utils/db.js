@@ -14,7 +14,7 @@ const connectDB = async () => {
     }
     catch (error) {
         console.log(error.message);
-        setTimeout(connectDB, 2000);
+        setTimeout(connectDB, 1000);
     }
 };
 exports.default = connectDB;
