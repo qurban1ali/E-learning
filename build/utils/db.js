@@ -3,18 +3,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.connectDB = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-require('dotenv').config();
-const dbUrl = 'mongodb+srv://qa6657467_db_user:KZybWw9DCSiLOwBm@lms-data.1htcr4r.mongodb.net/lms-data';
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+// DB_URL add
+const dbUrl = process.env.DB_URL || "";
+//Connect files
 const connectDB = async () => {
     try {
-        await mongoose_1.default.connect(dbUrl).then((data) => {
-            console.log(`Database connected with ${data.connection.host}`);
-        });
+        console.log("🟡 Connecting to MongoDB...");
+        console.log("🔗 DB_URL:", dbUrl);
+        await mongoose_1.default.connect(dbUrl);
+        console.log("✅ Database connected successfully");
     }
     catch (error) {
-        console.log(error.message);
-        setTimeout(connectDB, 5000);
+        console.error("❌ DB connection error:", error.message);
+        setTimeout(exports.connectDB, 5000);
     }
 };
-exports.default = connectDB;
+exports.connectDB = connectDB;
+exports.default = exports.connectDB;

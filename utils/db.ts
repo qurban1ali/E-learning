@@ -1,17 +1,21 @@
 import mongoose from "mongoose";
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 
-const dbUrl:string ='mongodb+srv://qa6657467_db_user:KZybWw9DCSiLOwBm@lms-data.1htcr4r.mongodb.net/lms-data';
+// DB_URL add
+const dbUrl = process.env.DB_URL || "";
 
-const connectDB = async()=>{
-    try {
-        await mongoose.connect(dbUrl).then((data:any) => {
-            console.log(`Database connected with ${data.connection.host}`);
-        }) 
-    } catch (error:any) {
-        console.log(error.message)
-        setTimeout(connectDB, 5000)
-    }
-}
+//Connect files
+export const connectDB = async () => {
+  try {
+    console.log("🟡 Connecting to MongoDB...");
+    console.log("🔗 DB_URL:", dbUrl);
+    await mongoose.connect(dbUrl);
+    console.log("✅ Database connected successfully");
+  } catch (error: any) {
+    console.error("❌ DB connection error:", error.message);
+    setTimeout(connectDB, 5000);
+  }
+};
 
 export default connectDB;
